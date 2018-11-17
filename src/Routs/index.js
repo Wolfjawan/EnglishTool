@@ -14,6 +14,7 @@ import {
   Stack,
   Lightbox
 } from "react-native-router-flux";
+//documentations https://github.com/aksonov/react-native-router-flux/blob/master/docs/API.md#tabs-tabs-or-scene-tabs
 
 import DrawerContent from "../components/drawer/DrawerContent";
 import TabIcon from "../components/TabIcon";
@@ -56,8 +57,9 @@ const Routs = () => (
           drawerImage={MenuIcon}
           drawerWidth={200}
         >
-          <Scene hideNavBar panHandlers={null}>
+          <Scene hideNavBar panHandlers={null} styles={styles.tabsScene}>
             <Tabs
+              tabBarPosition="buttom"
               key="tabbar"
               routeName="tabbar"
               backToInitial
@@ -65,6 +67,8 @@ const Routs = () => (
               showLabel={false}
               activeBackgroundColor="white"
               inactiveBackgroundColor="gray"
+              hideNavBar
+              lazy={false}
             >
               <Stack
                 key="home_screen"
@@ -117,6 +121,9 @@ const Routs = () => (
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  tabsScene: {
+    bottom: 0
   }
 });
 export default Routs;
