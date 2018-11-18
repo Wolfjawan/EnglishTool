@@ -51,15 +51,15 @@ const Routs = () => (
         <Drawer
           hideNavBar
           key="drawer"
-          // onExit={() => alert("Drawer opend")}
-          // onEnter={() => alert("Drawer opend")}
+          // onExit={() => alert("Drawer closed")}
+          // onEnter={() => alert("Drawer opened")}
           contentComponent={DrawerContent}
           drawerImage={MenuIcon}
           drawerWidth={200}
         >
           <Scene hideNavBar panHandlers={null} styles={styles.tabsScene}>
             <Tabs
-              tabBarPosition="buttom"
+              tabBarPosition="bottom"
               key="tabbar"
               routeName="tabbar"
               backToInitial
