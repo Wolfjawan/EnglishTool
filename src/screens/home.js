@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { StyleSheet, Text, View, ViewPropTypes } from "react-native";
 import Button from "react-native-button";
 import { Actions } from "react-native-router-flux";
-
+// import { GoogleSignin, GoogleSigninButton } from "react-native-google-signin";
 const propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.string,
@@ -22,6 +22,13 @@ class NomeScreen extends React.Component {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <Text>home screen</Text>
+        {/* <GoogleSigninButton
+          style={{ width: 48, height: 48 }}
+          size={GoogleSigninButton.Size.Icon}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={this._signIn}
+          disabled={this.state.isSigninInProgress}
+        /> */}
       </View>
     );
   }
