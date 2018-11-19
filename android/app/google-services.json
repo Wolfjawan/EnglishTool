@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "688958015400-3d8405fus9osa1ur7h4lov549216kosg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.englishtool",
+            "certificate_hash": "037e9ac8d59871c465d68675cbe6edef731199e9"
+          }
+        },
+        {
           "client_id": "688958015400-ilebs3oii0rr447a357ct55rchctkgsh.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688958015400-ilebs3oii0rr447a357ct55rchctkgsh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
