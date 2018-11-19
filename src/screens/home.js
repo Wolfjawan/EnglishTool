@@ -1,6 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, Text, View, ViewPropTypes, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ViewPropTypes,
+  Image,
+  ScrollView,
+  TextInput
+} from "react-native";
 import Button from "react-native-button";
 import { Actions } from "react-native-router-flux";
 import {
@@ -9,7 +17,7 @@ import {
   statusCodes
 } from "react-native-google-signin";
 // import firebase from "firebase";
-
+import firebase from "react-native-firebase";
 const propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.string,
@@ -23,7 +31,15 @@ const defaultProps = {
 
 GoogleSignin.configure();
 class NomeScreen extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false, userInfo: {} };
+  constructor() {
+    super();
+    this.ref = firebase.firestore().collection("todos");
+    this.state = {
+      hideNavBar: false,
+      hideTabBar: false,
+      userInfo: {}
+    };
+  }
   signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -51,25 +67,34 @@ class NomeScreen extends React.Component {
     console.log("here", userInfo);
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
-        {userInfo.user && <View>
-          <Image
-          style={{ width: 100, height: 100 }}
-          source={{ uri: userInfo.user.photo }}
-        />
-          <Text>{userInfo.user.givenName}</Text>  
-          <Text>{userInfo.user.familyName}</Text>  
-          <Text>{userInfo.user.email}</Text>  
-          <Text>{userInfo.user.name}</Text>  
- 
-        </View>}
-        {!userInfo.user && <GoogleSigninButton
-          style={{ width: 70, height: 78 }}
-          size={GoogleSigninButton.Size.Icon}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={this.signIn}
-          disabled={this.state.isSigninInProgress}
-        />}
-
+        {userInfo.user && (
+          <View>
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={{ uri: userInfo.user.photo }}
+            />
+            <Text>{userInfo.user.givenName}</Text>
+            <Text>{userInfo.user.familyName}</Text>
+            <Text>{userInfo.user.email}</Text>
+            <Text>{userInfo.user.name}</Text>
+          </View>
+        )}
+        {/* {!userInfo.user && (
+          <GoogleSigninButton
+            style={{ width: 70, height: 78 }}
+            size={GoogleSigninButton.Size.Icon}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this.signIn}
+            disabled={this.state.isSigninInProgress}
+          />
+        )} */}
+        <View>
+          <ScrollView>
+            <Text>List of TODOs</Text>
+          </ScrollView>
+          <TextInput placeholder={"Add TODO"} />
+          <Button title={"Add TODO"} disabled={true} onPress={() => {}} />
+        </View>
       </View>
     );
   }
@@ -86,18 +111,18 @@ const styles = StyleSheet.create({
   }
 });
 export default NomeScreen;
-  //'here', { scopes:
-  //   [ 'https://www.googleapis.com/auth/userinfo.profile',
-  //     'https://www.googleapis.com/auth/plus.me',
-  //     'https://www.googleapis.com/auth/userinfo.email' ],
-  //  accessTokenExpirationDate: null,
-  //  serverAuthCode: null,
-  //  idToken: null,
-  //  accessToken: 'ya29.GltYBoJZ8Qm5gdpKje9B46J56Qu4RhXh55hXLHb6259RVQqR7bQDhqzwZorQIkhL7mYDi6-odzc3soKbThUFQt2aMqIPF4Bmns6zPayfbhTyPQ51E_B77K2uGJAL',
-  //  user:
-  //   { photo: 'https://lh4.googleusercontent.com/-ftSkGOGurow/AAAAAAAAAAI/AAAAAAAAAHs/AmPsJ1bMvgM/photo.jpg',
-  //     email: 'mohsen000069@gmail.com',
-  //     givenName: 'Mohsen',
-  //     familyName: 'Moradi',
-  //     name: 'Mohsen Moradi',
-  //     id: '117017369556829078538' } }
+//'here', { scopes:
+//   [ 'https://www.googleapis.com/auth/userinfo.profile',
+//     'https://www.googleapis.com/auth/plus.me',
+//     'https://www.googleapis.com/auth/userinfo.email' ],
+//  accessTokenExpirationDate: null,
+//  serverAuthCode: null,
+//  idToken: null,
+//  accessToken: 'ya29.GltYBoJZ8Qm5gdpKje9B46J56Qu4RhXh55hXLHb6259RVQqR7bQDhqzwZorQIkhL7mYDi6-odzc3soKbThUFQt2aMqIPF4Bmns6zPayfbhTyPQ51E_B77K2uGJAL',
+//  user:
+//   { photo: 'https://lh4.googleusercontent.com/-ftSkGOGurow/AAAAAAAAAAI/AAAAAAAAAHs/AmPsJ1bMvgM/photo.jpg',
+//     email: 'mohsen000069@gmail.com',
+//     givenName: 'Mohsen',
+//     familyName: 'Moradi',
+//     name: 'Mohsen Moradi',
+//     id: '117017369556829078538' } }
