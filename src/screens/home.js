@@ -37,9 +37,19 @@ class NomeScreen extends React.Component {
     this.state = {
       hideNavBar: false,
       hideTabBar: false,
-      userInfo: {}
+      userInfo: {},
+      textInput: ""
     };
   }
+  updateTextInput(value) {
+    this.setState({ textInput: value });
+  }
+  addTodo=()=> {
+  this.ref.add({
+    title: this.state.textInput,
+    complete: false,
+  });
+}
   signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -92,8 +102,16 @@ class NomeScreen extends React.Component {
           <ScrollView>
             <Text>List of TODOs</Text>
           </ScrollView>
-          <TextInput placeholder={"Add TODO"} />
-          <Button title={"Add TODO"} disabled={true} onPress={() => {}} />
+          <TextInput
+            placeholder={"Add TODO"}
+            value={this.state.textInput}
+            onChangeText={text => this.updateTextInput(text)}
+          />
+          <Button
+            title={"Add TODO"}
+            disabled={!this.state.textInput.length}
+            onPress={() => this.addTodo()}
+          >Add TODO</Button>
         </View>
       </View>
     );
