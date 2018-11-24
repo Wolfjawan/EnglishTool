@@ -27,6 +27,7 @@ import AddNewSentence from "../components/Forms/AddNewSentence";
 import Sentences from "../screens/Sentences";
 import Archive from "../screens/Archive";
 import Settings from "../screens/Settings";
+import Word from "../components/word";
 
 const stateHandler = (prevState, newState, action) => {
   // console.log("onStateChange: ACTION:",);
@@ -40,7 +41,7 @@ const getSceneStyle = () => ({
 
 const prefix = Platform.OS === "android" ? "mychat://mychat/" : "mychat://";
 
-const Routs = (db) => (
+const Routs = db => (
   <Router
     onStateChange={stateHandler}
     getSceneStyle={getSceneStyle}
@@ -87,6 +88,7 @@ const Routs = (db) => (
                 icon={TabIcon}
               >
                 <Scene key="Words" component={Words} title="Words" />
+                <Scene key="wordId" component={Word} title="Word" />
               </Stack>
               <Stack key="Sentences" icon={TabIcon} title="Sentences">
                 <Scene key="Sentences" component={Sentences} />

@@ -1,9 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, Text, View, ViewPropTypes } from "react-native";
-import Button from "react-native-button";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ViewPropTypes,
+  ScrollView
+} from "react-native";
 import { Actions } from "react-native-router-flux";
-
+import Button from "../components/Elements/Button";
 const propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.string,
@@ -21,31 +26,41 @@ class Words extends React.Component {
     var { db } = this.props.db;
     db.transaction(tx => {
       tx.executeSql("SELECT * FROM words", [], (tx, results) => {
-        // Get rows with Web SQL Database spec compliance.
         var len = results.rows.length;
         for (let i = 0; i < len; i++) {
           let row = results.rows.item(i);
-          console.log(`Record: ${row.name}`);
-          this.setState({ words: row });
+          newWords = {
+            id: row.id,
+            name: row.name,
+            meaning: row.meaning,
+            translation: row.translation,
+            archive: row.archive,
+            examples: row.examples,
+            level: row.level
+          };
+          this.setState({
+            words: [...this.state.words, newWords]
+          });
         }
       });
     });
   }
   render() {
-    console.log(this.state.words);
     const { words } = this.state;
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
-        <Text>Show words here</Text>
-        <View>
-          {words.map((word) => {
+        <ScrollView>
+          {words.map((word, i) => {
             return (
-              <View>
-                <Text>{word.name}</Text>
-              </View>
+              <Button
+                key={i}
+                text={word.name}
+                buttonStyle={styles.button}
+                onPress={() => Actions.wordId({ word })}
+              />
             );
           })}
-        </View>
+        </ScrollView>
       </View>
     );
   }
@@ -56,9 +71,21 @@ Words.defaultProps = defaultProps;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    marginTop: 20
+  },
+  words: {
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5
+  },
+  button: {
+    backgroundColor: "#fff",
+    borderColor: "#48BBEC",
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 10,
+    marginBottom: 0
   }
 });
 export default Words;

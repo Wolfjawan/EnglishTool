@@ -1,6 +1,6 @@
 create table words
 (
-    id serial primary key,
+    id INTEGER primary key,
     name text ,
     meaning text,
     translation text,

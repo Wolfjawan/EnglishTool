@@ -44,13 +44,11 @@ class AddNewWord extends React.Component {
   onPress = () => {
     var { db } = this.props.db;
     const { name, meaning, translation, examples } = this.state;
-    console.log(this.state)
     db.transaction(tx => {
       tx.executeSql(
         "insert into words ( name, meaning, translation, examples ) values ( ?, ?, ?, ? )",
         [name, meaning, translation, examples],
         (tx, results) => {
-          console.log(results);
         }
       );
     });
@@ -84,7 +82,7 @@ class AddNewWord extends React.Component {
             name="examples"
             onChangeText={this.onChangeText}
           />
-          <Button style={styles.button} text="Save" onPress={this.onPress} />
+          <Button buttonStyle={styles.button} text="Save" onPress={this.onPress} />
         </ScrollView>
       </View>
     );

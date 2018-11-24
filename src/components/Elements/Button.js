@@ -10,9 +10,9 @@ import {
 class MYButton extends Component {
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
+      <View style={[styles.container, this.props.buttonStyle]}>
         <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
-          <Text> {this.props.text} </Text>
+          <Text style={this.props.textStyle}> {this.props.text} </Text>
         </TouchableOpacity>
       </View>
     );
