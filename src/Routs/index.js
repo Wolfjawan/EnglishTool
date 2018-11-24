@@ -29,7 +29,7 @@ import Archive from "../screens/Archive";
 import Settings from "../screens/Settings";
 
 const stateHandler = (prevState, newState, action) => {
-  console.log("onStateChange: ACTION:", action);
+  // console.log("onStateChange: ACTION:",);
 };
 
 const getSceneStyle = () => ({
@@ -40,11 +40,12 @@ const getSceneStyle = () => ({
 
 const prefix = Platform.OS === "android" ? "mychat://mychat/" : "mychat://";
 
-const Routs = () => (
+const Routs = (db) => (
   <Router
     onStateChange={stateHandler}
     getSceneStyle={getSceneStyle}
     uriPrefix={prefix}
+    db={db}
   >
     <Modal key="modal" hideNavBar>
       <Stack key="root" titleStyle={{ alignSelf: "center" }}>

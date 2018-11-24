@@ -8,20 +8,10 @@ import {
   TouchableHighlight,
   ScrollView
 } from "react-native";
-import Button from "react-native-button";
+import Input from "../Elements/Input";
+import TextArea from "../Elements/TextArea";
+import Button from "../Elements/Button";
 import { Actions } from "react-native-router-flux";
-
-import t from "tcomb-form-native";
-var Form = t.form.Form;
-
-var Word = t.struct({
-  name: t.String,
-  meaning: t.String,
-  translation: t.String
-  // rememberMe: t.Boolean // a boolean
-});
-
-var options = {};
 
 const propTypes = {
   name: PropTypes.string.isRequired,
@@ -35,27 +25,66 @@ const defaultProps = {
 };
 
 class AddNewWord extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false };
+  state = {
+    hideNavBar: false,
+    hideTabBar: false,
+    words: [],
+    name: "",
+    meaning: "",
+    translation: "",
+    examples: ""
+  };
 
-  onPress = () => {
-    var value = this.refs.form.getValue();
-    if (value) {
-      console.log(value)
-    }
+  onChangeText = e => {
+    this.setState({
+      [e.name]: e.text
+    });
   };
   
+  onPress = () => {
+    var { db } = this.props.db;
+    const { name, meaning, translation, examples } = this.state;
+    console.log(this.state)
+    db.transaction(tx => {
+      tx.executeSql(
+        "insert into words ( name, meaning, translation, examples ) values ( ?, ?, ?, ? )",
+        [name, meaning, translation, examples],
+        (tx, results) => {
+          console.log(results);
+        }
+      );
+    });
+  };
+
   render() {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
-          <Form ref="form" type={Word} options={options} />
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.onPress}
-            underlayColor="#99d9f4"
-          >
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableHighlight>
+          <Input
+            header="Word"
+            value={this.state.name}
+            name="name"
+            onChangeText={this.onChangeText}
+          />
+          <Input
+            header="Translation"
+            value={this.state.translation}
+            name="translation"
+            onChangeText={this.onChangeText}
+          />
+          <TextArea
+            header="Meaning"
+            value={this.state.meaning}
+            name="meaning"
+            onChangeText={this.onChangeText}
+          />
+          <TextArea
+            header="Examples"
+            value={this.state.examples}
+            name="examples"
+            onChangeText={this.onChangeText}
+          />
+          <Button style={styles.button} text="Save" onPress={this.onPress} />
         </ScrollView>
       </View>
     );
@@ -77,14 +106,11 @@ var styles = StyleSheet.create({
     alignSelf: "center"
   },
   button: {
-    height: 36,
     backgroundColor: "#48BBEC",
     borderColor: "#48BBEC",
     borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: "stretch",
-    justifyContent: "center"
+    borderRadius: 5,
+    marginTop: 10
   }
 });
 export default AddNewWord;
