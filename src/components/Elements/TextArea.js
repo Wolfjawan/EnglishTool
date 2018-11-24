@@ -14,7 +14,6 @@ class TextArea extends React.Component {
           numberOfLines={4}
           onChangeText={text => this.props.onChangeText({ text, name })}
           value={this.props.value}
-          maxLength = {40}
         />
       </View>
     );

@@ -21,16 +21,16 @@ const defaultProps = {
   sceneStyle: null
 };
 
-class Word extends React.Component {
+class Sentence extends React.Component {
   state = { hideNavBar: false, hideTabBar: false, ShowTranslation: false };
 
   render() {
-    const { name, meaning, translation, examples } = this.props.word;
+    const { name, meaning, translation } = this.props.sentence;
     const { ShowTranslation } = this.state;
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
-          <View style={styles.word}>
+          <View style={styles.Sentence}>
             {ShowTranslation ? (
               <Button
                 text={translation}
@@ -38,7 +38,6 @@ class Word extends React.Component {
                   this.setState({ ShowTranslation: false });
                 }}
                 textStyle={styles.name}
-                buttonStyle={styles.button}
               />
             ) : (
               <Button
@@ -47,16 +46,11 @@ class Word extends React.Component {
                   this.setState({ ShowTranslation: true });
                 }}
                 textStyle={styles.name}
-                buttonStyle={styles.button}
               />
             )}
-            <View style={styles.meaning}>
-              <Text>Meaning: </Text>
+            <View style={{marginBottom: 10, padding: 4}}>
+              <Text style={styles.meaning}>Meaning: </Text>
               <Text>{meaning}</Text>
-            </View>
-            <View style={styles.examples}>
-              <Text>Examples: </Text>
-              <Text>{examples}</Text>
             </View>
           </View>
         </ScrollView>
@@ -64,50 +58,25 @@ class Word extends React.Component {
     );
   }
 }
-Word.propTypes = propTypes;
-Word.defaultProps = defaultProps;
+Sentence.propTypes = propTypes;
+Sentence.defaultProps = defaultProps;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent"
-  },
-  word: {
-    padding: 10,
-    margin: 10,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    justifyContent: "center"
+    backgroundColor: "transparent",
+    padding:10
   },
   name: {
-    fontSize: 54,
-    color: "#503204"
-  },
-  button: {
-    alignItems: "center",
-    padding: 10
+    fontSize: 15,
+    color: "#503204",
+    marginTop:10,
+    marginBottom: 10,
+    padding: 4
   },
   meaning: {
-    fontSize: 24,
+    fontSize: 15,
     color: "#503204",
-    borderBottomWidth: 1,
-    borderBottomColor: "#A2A2A2",
-    marginBottom: 10,
-    padding: 4
-  },
-  translation: {
-    fontSize: 24,
-    color: "#503204",
-    borderBottomWidth: 1,
-    borderBottomColor: "#A2A2A2",
-    marginBottom: 10,
-    padding: 4
-  },
-  examples: {
-    fontSize: 24,
-    color: "#503204",
-    padding: 4
   }
 });
-export default Word;
+export default Sentence;

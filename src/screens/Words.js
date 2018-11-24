@@ -22,31 +22,11 @@ const defaultProps = {
 
 class Words extends React.Component {
   state = { hideNavBar: false, hideTabBar: false, words: [] };
-  componentDidMount() {
-    var { db } = this.props.db;
-    db.transaction(tx => {
-      tx.executeSql("SELECT * FROM words", [], (tx, results) => {
-        var len = results.rows.length;
-        for (let i = 0; i < len; i++) {
-          let row = results.rows.item(i);
-          newWords = {
-            id: row.id,
-            name: row.name,
-            meaning: row.meaning,
-            translation: row.translation,
-            archive: row.archive,
-            examples: row.examples,
-            level: row.level
-          };
-          this.setState({
-            words: [...this.state.words, newWords]
-          });
-        }
-      });
-    });
-  }
+
+
+
   render() {
-    const { words } = this.state;
+    const { words } = this.props;
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
@@ -56,6 +36,7 @@ class Words extends React.Component {
                 key={i}
                 text={word.name}
                 buttonStyle={styles.button}
+                textStyle={styles.text}
                 onPress={() => Actions.wordId({ word })}
               />
             );
@@ -74,10 +55,9 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     marginTop: 20
   },
-  words: {
+  text: {
     borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5
+    fontSize:20
   },
   button: {
     backgroundColor: "#fff",
@@ -85,7 +65,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     margin: 10,
-    marginBottom: 0
+    marginBottom: 0,
+    padding: 10
   }
 });
 export default Words;

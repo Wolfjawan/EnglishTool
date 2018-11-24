@@ -5,11 +5,9 @@ import {
   Text,
   View,
   ViewPropTypes,
-  TouchableHighlight,
   ScrollView
 } from "react-native";
 import Input from "../Elements/Input";
-import TextArea from "../Elements/TextArea";
 import Button from "../Elements/Button";
 import { Actions } from "react-native-router-flux";
 
@@ -28,7 +26,6 @@ class AddNewWord extends React.Component {
   state = {
     hideNavBar: false,
     hideTabBar: false,
-    words: [],
     name: "",
     meaning: "",
     translation: "",
@@ -40,15 +37,24 @@ class AddNewWord extends React.Component {
       [e.name]: e.text
     });
   };
-  
+
   onPress = () => {
-    var { db } = this.props.db;
+    var { db } = this.props
     const { name, meaning, translation, examples } = this.state;
     db.transaction(tx => {
       tx.executeSql(
         "insert into words ( name, meaning, translation, examples ) values ( ?, ?, ?, ? )",
         [name, meaning, translation, examples],
         (tx, results) => {
+          if (results) {
+            this.setState({
+              name: "",
+              meaning: "",
+              translation: "",
+              examples: ""
+            });
+            this.props.getData()
+          }
         }
       );
     });
@@ -70,19 +76,23 @@ class AddNewWord extends React.Component {
             name="translation"
             onChangeText={this.onChangeText}
           />
-          <TextArea
+          <Input
             header="Meaning"
             value={this.state.meaning}
             name="meaning"
             onChangeText={this.onChangeText}
           />
-          <TextArea
+          <Input
             header="Examples"
             value={this.state.examples}
             name="examples"
             onChangeText={this.onChangeText}
           />
-          <Button buttonStyle={styles.button} text="Save" onPress={this.onPress} />
+          <Button
+            buttonStyle={styles.button}
+            text="Save"
+            onPress={this.onPress}
+          />
         </ScrollView>
       </View>
     );
@@ -108,7 +118,9 @@ var styles = StyleSheet.create({
     borderColor: "#48BBEC",
     borderWidth: 1,
     borderRadius: 5,
-    marginTop: 10
+    marginTop: 10,
+    alignItems: "center",
+    padding: 10
   }
 });
 export default AddNewWord;
