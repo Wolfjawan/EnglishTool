@@ -49,8 +49,8 @@ class Sentence extends React.Component {
               />
             )}
             <View style={{marginBottom: 10, padding: 4}}>
-              <Text style={styles.meaning}>Meaning: </Text>
-              <Text>{meaning}</Text>
+              <Text >Meaning: </Text>
+              <Text style={styles.meaning}>{meaning}</Text>
             </View>
           </View>
         </ScrollView>
@@ -68,14 +68,14 @@ const styles = StyleSheet.create({
     padding:10
   },
   name: {
-    fontSize: 15,
+    fontSize: 20,
     color: "#503204",
     marginTop:10,
     marginBottom: 10,
     padding: 4
   },
   meaning: {
-    fontSize: 15,
+    fontSize: 20,
     color: "#503204",
   }
 });

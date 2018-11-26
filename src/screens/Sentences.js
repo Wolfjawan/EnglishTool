@@ -51,14 +51,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    marginTop: 20
+    marginTop: 20,
+    backgroundColor:'#CAD8DE'
   },
   text: {
-    borderColor: "gray",
-    fontSize:20
+    color: "white",
+    fontSize:24
   },
   button: {
-    backgroundColor: "#fff",
+    backgroundColor: "#384E77",
     borderColor: "#48BBEC",
     borderWidth: 1,
     borderRadius: 5,

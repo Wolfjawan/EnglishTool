@@ -29,13 +29,14 @@ import Archive from "../screens/Archive";
 import Settings from "../screens/Settings";
 import Word from "../components/word";
 import Sentence from "../components/sentence";
+import DrawerIcon from "../components/drawer/drawerIcon";
 
 const stateHandler = (prevState, newState, action) => {
   // console.log("onStateChange: ACTION:",);
 };
 
 const getSceneStyle = () => ({
-  backgroundColor: "#F5FCFF",
+  backgroundColor:'#CAD8DE',
   shadowOpacity: 1,
   shadowRadius: 3
 });
@@ -53,82 +54,80 @@ const Routs = ({ db, words, sentences, getData }) => (
     getData={getData}
   >
     <Overlay key="overlay">
-      <Modal key="modal" hideNavBar>
-        <Stack key="root" titleStyle={{ alignSelf: "center" }}>
-          <Scene hideNavBar panHandlers={null} styles={styles.tabsScene}>
-            <Drawer
-              hideNavBar
-              key="drawer"
-              // onExit={() => alert("Drawer closed")}
-              // onEnter={() => alert("Drawer opened")}
-              contentComponent={DrawerContent}
-              drawerImage={MenuIcon}
-              drawerWidth={200}
-            >
-              <Tabs
-                tabBarPosition="bottom"
-                key="tabbar"
-                routeName="tabbar"
-                backToInitial
-                swipeEnabled
-                showLabel={false}
-                activeBackgroundColor="white"
-                inactiveBackgroundColor="gray"
-                hideNavBar
-                lazy={false}
-              >
-                <Stack
-                  key="home_screen"
-                  title="Home"
-                  key="home_screen"
-                  component={HomeScreen}
-                  title="Home"
-                  tabBarLabel="Home"
-                  icon={TabIcon}
-                  initial
-                />
-                <Stack
-                  key="Words"
-                  title="Words"
-                  icon={TabIcon}
-                  component={Words}
-                />
-                <Stack
-                  key="Sentences"
-                  icon={TabIcon}
-                  title="Sentences"
-                  component={Sentences}
-                />
-                <Stack
-                  key="AddNewWordOrSentences"
-                  title="Forms"
-                  icon={TabIcon}
-                  component={AddNewWordOrSentences}
-                />
-                <Stack
-                  key="Archive"
-                  icon={TabIcon}
-                  title="Archive"
-                  component={Archive}
-                />
-              </Tabs>
-            </Drawer>
-          </Scene>
-          <Scene
-            key="add_new_word"
-            component={AddNewWord}
-            title="Add new word"
-          />
-          <Scene
-            key="add_new_sentence"
-            component={AddNewSentence}
-            title="Add new Sentence"
-          />
-          <Scene key="wordId" component={Word} title="Word" />
-          <Scene key="sentenceId" component={Sentence} title="Sentence" />
-          <Scene key="settings" component={Settings} title="Settings" />
-        </Stack>
-      </Modal>
+      {/* <Modal key="modal" hideNavBar> */}
+      <Stack key="root" titleStyle={{ alignSelf: "center" }}>
+        {/* <Scene hideNavBar panHandlers={null} styles={styles.tabsScene}> */}
+        <Drawer
+          hideNavBar
+          key="drawer"
+          // onExit={() => alert("Drawer closed")}
+          // onEnter={() => alert("Drawer opened")}
+          contentComponent={DrawerContent}
+          drawerImage={MenuIcon}
+          drawerWidth={300}
+          drawerPosition="right"
+          // drawerIcon={DrawerIcon}
+        >
+          <Tabs
+            // tabBarPosition="bottom"
+            key="tabbar"
+            routeName="tabbar"
+            backToInitial
+            swipeEnabled
+            showLabel={false}
+            activeBackgroundColor="white"
+            inactiveBackgroundColor=""
+            hideNavBar
+            lazy={false}
+          >
+            <Stack key="Words" title="Words" icon={TabIcon}>
+              <Scene
+                onPress={() => Actions.home_screen()}
+                title="Home"
+                titleStyle={{ alignItems: "center", textAlign: "center" }}
+                component={Words}
+              />
+            </Stack>
+            <Stack
+              key="Sentences"
+              icon={TabIcon}
+              title="Sentences"
+              component={Sentences}
+            />
+            <Stack
+              key="AddNewWordOrSentences"
+              title="Forms"
+              icon={TabIcon}
+              component={AddNewWordOrSentences}
+            />
+            <Stack
+              key="Archive"
+              icon={TabIcon}
+              title="Archive"
+              component={Archive}
+            />
+          </Tabs>
+        </Drawer>
+        {/* </Scene> */}
+        <Scene key="add_new_word" component={AddNewWord} title="Add new word" />
+        <Scene
+          key="add_new_sentence"
+          component={AddNewSentence}
+          title="Add new Sentence"
+        />
+        <Scene key="wordId" component={Word} title="Word" />
+        <Scene key="sentenceId" component={Sentence} title="Sentence" />
+        <Scene key="settings" component={Settings} title="Settings" />
+        <Scene
+          title="Home"
+          key="home_screen"
+          component={HomeScreen}
+          tabBarLabel="Home"
+          icon={TabIcon}
+          // initial
+        />
+      </Stack>
+      {/* </Modal> */}
     </Overlay>
   </Router>
 );

@@ -50,13 +50,13 @@ class Word extends React.Component {
                 buttonStyle={styles.button}
               />
             )}
-            <View style={styles.meaning}>
+            <View >
               <Text>Meaning: </Text>
-              <Text>{meaning}</Text>
+              <Text style={styles.meaning}>{meaning}</Text>
             </View>
-            <View style={styles.examples}>
+            <View >
               <Text>Examples: </Text>
-              <Text>{examples}</Text>
+              <Text style={styles.examples}>{examples}</Text>
             </View>
           </View>
         </ScrollView>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   meaning: {
-    fontSize: 24,
+    fontSize: 20,
     color: "#503204",
     borderBottomWidth: 1,
     borderBottomColor: "#A2A2A2",
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     padding: 4
   },
   translation: {
-    fontSize: 24,
+    fontSize: 20,
     color: "#503204",
     borderBottomWidth: 1,
     borderBottomColor: "#A2A2A2",
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     padding: 4
   },
   examples: {
-    fontSize: 24,
+    fontSize: 20,
     color: "#503204",
     padding: 4
   }
