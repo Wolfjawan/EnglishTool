@@ -19,6 +19,7 @@ import {
 import DrawerContent from "../components/drawer/DrawerContent";
 import TabIcon from "../components/TabIcon";
 import MenuIcon from "../images/menu_burger.png";
+import HomeIcon from "../images/icon-home.png";
 import HomeScreen from "../screens/home";
 import Words from "../screens/Words";
 import AddNewWordOrSentences from "../screens/AddNewWordOrSentences";
@@ -32,18 +33,18 @@ import Sentence from "../components/sentence";
 import DrawerIcon from "../components/drawer/drawerIcon";
 
 const stateHandler = (prevState, newState, action) => {
-  // console.log("onStateChange: ACTION:",);
+  // console.log("onStateChange: ACTION:",newState);
 };
 
 const getSceneStyle = () => ({
-  backgroundColor:'#CAD8DE',
+  backgroundColor: "#CAD8DE",
   shadowOpacity: 1,
   shadowRadius: 3
 });
 
 const prefix = Platform.OS === "android" ? "mychat://mychat/" : "mychat://";
 
-const Routs = ({ db, words, sentences, getData }) => (
+const Routs = ({ db, words, sentences, getData, saveWordInState }) => (
   <Router
     onStateChange={stateHandler}
     getSceneStyle={getSceneStyle}
@@ -52,11 +53,10 @@ const Routs = ({ db, words, sentences, getData }) => (
     words={words}
     sentences={sentences}
     getData={getData}
+    saveWordInState={saveWordInState}
   >
     <Overlay key="overlay">
-      {/* <Modal key="modal" hideNavBar> */}
       <Stack key="root" titleStyle={{ alignSelf: "center" }}>
-        {/* <Scene hideNavBar panHandlers={null} styles={styles.tabsScene}> */}
         <Drawer
           hideNavBar
           key="drawer"
@@ -66,28 +66,21 @@ const Routs = ({ db, words, sentences, getData }) => (
           drawerImage={MenuIcon}
           drawerWidth={300}
           drawerPosition="right"
-          // drawerIcon={DrawerIcon}
+          onLeft={() => Actions.home_screen()}
+          leftButtonImage={HomeIcon}
         >
+          <Scene title="Home" key="home_screen" component={HomeScreen} />
           <Tabs
-            // tabBarPosition="bottom"
-            key="tabbar"
-            routeName="tabbar"
+            key="tab-bar"
+            routeName="tab-bar"
             backToInitial
             swipeEnabled
             showLabel={false}
             activeBackgroundColor="white"
             inactiveBackgroundColor=""
-            hideNavBar
             lazy={false}
           >
-            <Stack key="Words" title="Words" icon={TabIcon}>
-              <Scene
-                onPress={() => Actions.home_screen()}
-                title="Home"
-                titleStyle={{ alignItems: "center", textAlign: "center" }}
-                component={Words}
-              />
-            </Stack>
+            <Stack key="Words" title="Words" icon={TabIcon} component={Words} />
             <Stack
               key="Sentences"
               icon={TabIcon}
@@ -108,7 +101,6 @@ const Routs = ({ db, words, sentences, getData }) => (
             />
           </Tabs>
         </Drawer>
-        {/* </Scene> */}
         <Scene key="add_new_word" component={AddNewWord} title="Add new word" />
         <Scene
           key="add_new_sentence"
@@ -118,16 +110,7 @@ const Routs = ({ db, words, sentences, getData }) => (
         <Scene key="wordId" component={Word} title="Word" />
         <Scene key="sentenceId" component={Sentence} title="Sentence" />
         <Scene key="settings" component={Settings} title="Settings" />
-        <Scene
-          title="Home"
-          key="home_screen"
-          component={HomeScreen}
-          tabBarLabel="Home"
-          icon={TabIcon}
-          // initial
-        />
       </Stack>
-      {/* </Modal> */}
     </Overlay>
   </Router>
 );

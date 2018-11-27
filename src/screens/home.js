@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { StyleSheet, Text, View, ViewPropTypes } from "react-native";
-import Button from "react-native-button";
+import Button from "../components/Elements/Button";
 import { Actions } from "react-native-router-flux";
 // import { GoogleSignin, GoogleSigninButton } from "react-native-google-signin";
 const propTypes = {
@@ -21,7 +21,18 @@ class NomeScreen extends React.Component {
   render() {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
-        <Text>home screen</Text>
+        <Button
+          text="Words"
+          buttonStyle={styles.button}
+          textStyle={styles.text}
+          onPress={() => Actions.Words()}
+        />
+        <Button
+          text="Sentences"
+          buttonStyle={styles.button}
+          textStyle={styles.text}
+          onPress={() => Actions.Sentences()}
+        />
         {/* <GoogleSigninButton
           style={{ width: 48, height: 48 }}
           size={GoogleSigninButton.Size.Icon}
@@ -39,9 +50,21 @@ NomeScreen.defaultProps = defaultProps;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    backgroundColor: "transparent",
+    marginTop: 20,
+    backgroundColor: "#CAD8DE"
+  },
+  button: {
+    backgroundColor: "#384E77",
+    borderRadius: 15,
+    margin: 50,
+    maxHeight: 100,
     alignItems: "center",
-    backgroundColor: "transparent"
+    padding: 10
+  },
+  text: {
+    fontSize: 30,
+    color: "white",
   }
 });
 export default NomeScreen;

@@ -22,13 +22,101 @@ const defaultProps = {
 };
 
 class Word extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false, ShowTranslation: false };
-
+  state = {
+    hideNavBar: false,
+    hideTabBar: false,
+    ShowTranslation: false,
+    isDelete: false
+  };
+  Archive = () => {
+    const { id, archive } = this.props.word;
+    const { db } = this.props;
+    db.transaction(tx => {
+      tx.executeSql(
+        `UPDATE words SET archive=? WHERE id=?`,
+        [archive ? false : true, id],
+        (tx, results) => {
+          if (results.rowsAffected === 1) {
+            archive
+              ? (alert("The word removed from Archives."),
+                this.props.getData(),
+                setTimeout(() => {
+                  Actions.Words();
+                }, 1000))
+              : (alert("The word stored in Archives."),
+                this.props.getData(),
+                setTimeout(() => {
+                  Actions.Words();
+                }, 1000));
+          } else {
+            alert("Somethings went wrong.");
+          }
+        }
+      );
+    });
+  };
+  delete = () => {
+    const { id } = this.props.word;
+    const { db } = this.props;
+    db.transaction(tx => {
+      tx.executeSql(`delete from words WHERE id=?`, [id], (tx, results) => {
+        if (results.rowsAffected === 1) {
+          alert("The word has been deleted.");
+          this.props.getData();
+          setTimeout(() => {
+            Actions.Words();
+          }, 1000);
+        } else {
+          alert("Somethings went wrong.");
+        }
+      });
+    });
+  };
   render() {
     const { name, meaning, translation, examples } = this.props.word;
-    const { ShowTranslation } = this.state;
+    const { ShowTranslation, isDelete } = this.state;
+    const { word } = this.props;
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
+        {isDelete && (
+          <View
+            style={{
+              borderWidth: 1,
+              paddingTop: 10,
+              margin: 10,
+              borderRadius: 5,
+              minHeight: 120,
+              alignItems: "center"
+            }}
+          >
+            <Text style={{ fontSize: 20 }}>
+              Are you sure you want to delete?
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                marginTop: 40,
+                maxHeight: 40
+              }}
+            >
+              <Button
+                text="Cancel"
+                onPress={() => {
+                  this.setState({ isDelete: false });
+                }}
+                textStyle={{ fontSize: 18 }}
+                buttonStyle={styles.Edit}
+              />
+              <Button
+                text="Delete"
+                onPress={this.delete}
+                textStyle={{ fontSize: 18 }}
+                buttonStyle={styles.Delete}
+              />
+            </View>
+          </View>
+        )}
         <ScrollView>
           <View style={styles.word}>
             {ShowTranslation ? (
@@ -50,16 +138,38 @@ class Word extends React.Component {
                 buttonStyle={styles.button}
               />
             )}
-            <View >
+            <View>
               <Text>Meaning: </Text>
               <Text style={styles.meaning}>{meaning}</Text>
             </View>
-            <View >
+            <View>
               <Text>Examples: </Text>
               <Text style={styles.examples}>{examples}</Text>
             </View>
           </View>
         </ScrollView>
+        <View style={{ flex: 1, flexDirection: "row", maxHeight: 40 }}>
+          <Button
+            text="Edit"
+            onPress={() => Actions.add_new_word({ word })}
+            textStyle={{ fontSize: 18 }}
+            buttonStyle={styles.Edit}
+          />
+          <Button
+            text="Archive"
+            onPress={this.Archive}
+            textStyle={{ fontSize: 18 }}
+            buttonStyle={styles.Archive}
+          />
+          <Button
+            text="Delete"
+            onPress={() => {
+              this.setState({ isDelete: true });
+            }}
+            textStyle={{ fontSize: 18 }}
+            buttonStyle={styles.Delete}
+          />
+        </View>
       </View>
     );
   }
@@ -87,6 +197,33 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     padding: 10
+  },
+  Edit: {
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#008DD5",
+    borderRadius: 5,
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 4
+  },
+  Delete: {
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#EA2B1F",
+    borderRadius: 5,
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 4
+  },
+  Archive: {
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#6CC551",
+    borderRadius: 5,
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 4
   },
   meaning: {
     fontSize: 20,

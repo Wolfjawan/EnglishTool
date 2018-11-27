@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import Button from "../components/Elements/Button";
+
 const propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.string,
@@ -22,8 +23,6 @@ const defaultProps = {
 
 class Words extends React.Component {
   state = { hideNavBar: false, hideTabBar: false, words: [] };
-
-
 
   render() {
     const { words } = this.props;
@@ -54,11 +53,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
     marginTop: 20,
-    backgroundColor:'#CAD8DE'
+    backgroundColor: "#CAD8DE"
   },
   text: {
     color: "white",
-    fontSize:24
+    fontSize: 24
   },
   button: {
     backgroundColor: "#384E77",

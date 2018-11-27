@@ -9,15 +9,17 @@ export default class App extends Component {
   state = { sentences: [], words: [] };
   componentDidMount() {
     CreateTables(db);
-    this.getData()
+    this.getData();
+    console.log("componentDidMount in app");
   }
   getData = () => {
     this.setState({
       sentences: [],
       words: []
     });
-    this.getWords();
     this.getSentences();
+    this.getWords();
+    console.log("get data in app");
   };
   getSentences = () => {
     db.transaction(tx => {
@@ -62,6 +64,24 @@ export default class App extends Component {
       });
     });
   };
+  saveWordInState = word => {
+    const { id, name, meaning, translation, examples } = word;
+    const { words } = this.state;
+    const wordsLength = words.length - 1;
+    const newId = words[wordsLength].id + 1;
+    newWord = {
+      id: newId,
+      name,
+      meaning,
+      translation,
+      archive: null,
+      examples,
+      level: null
+    };
+    this.setState({
+      words: [...this.state.words, newWord]
+    });
+  };
   render() {
     const { words, sentences } = this.state;
     return (
@@ -70,6 +90,7 @@ export default class App extends Component {
         words={words}
         sentences={sentences}
         getData={this.getData}
+        saveWordInState={this.saveWordInState}
       />
     );
   }
