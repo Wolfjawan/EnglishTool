@@ -13,7 +13,12 @@ const defaultProps = {
 };
 
 const TabIcon = props => (
-  <Text style={{ color: props.focused ? "green" : "black", fontSize:16 }}>{props.title}</Text>
+  <Text
+    style={{ color: props.focused ? "green" : "black", fontSize: 16 }}
+    onPress={props.onPress}
+  >
+    {props.title}
+  </Text>
 );
 
 TabIcon.propTypes = propTypes;

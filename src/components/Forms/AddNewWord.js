@@ -40,8 +40,6 @@ class AddNewWord extends React.Component {
       const { id, name, meaning, translation, examples } = this.props.word;
       this.setState({ id, name, meaning, translation, examples });
     }
-    const { words } = this.props;
-    console.log(words);
   }
   onChangeText = e => {
     this.setState({
@@ -50,54 +48,22 @@ class AddNewWord extends React.Component {
   };
 
   onPress = () => {
-    var { db } = this.props;
     const { id, name, meaning, translation, examples } = this.state;
-    const { words } = this.props;
-    console.log(words);
-    if (id) {
-      db.transaction(tx => {
-        tx.executeSql(
-          "update words set name=?, meaning=?, translation=?, examples=? where id=?",
-          [name, meaning, translation, examples, id],
-          (tx, results) => {
-            if (results) {
-              this.setState({
-                name: "",
-                meaning: "",
-                translation: "",
-                examples: ""
-              });
-              alert("Word has been updated");
-            }
-          }
-        );
-      });
-    } else {
-      const newWord = {
-        name,
-        meaning,
-        translation,
-        examples
-      };
-      this.props.saveWordInState(newWord)
-      db.transaction(tx => {
-        tx.executeSql(
-          "insert into words ( name, meaning, translation, examples ) values ( ?, ?, ?, ? )",
-          [name, meaning, translation, examples],
-          (tx, results) => {
-            if (results) {
-              this.setState({
-                name: "",
-                meaning: "",
-                translation: "",
-                examples: ""
-              });
-              alert("Word has been saved");
-            }
-          }
-        );
-      });
-    }
+    const word = {
+      id,
+      name,
+      meaning,
+      translation,
+      examples
+    };
+    this.props.addWord(word);
+    this.setState({
+      name: "",
+      meaning: "",
+      translation: "",
+      examples: "",
+      id: null
+    });
   };
 
   render() {
@@ -164,4 +130,6 @@ var styles = StyleSheet.create({
     padding: 10
   }
 });
-export default AddNewWord;
+
+
+export default AddNewWord

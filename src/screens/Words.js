@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import {
   StyleSheet,
   Text,
@@ -22,10 +23,14 @@ const defaultProps = {
 };
 
 class Words extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false, words: [] };
+  state = { hideNavBar: false, hideTabBar: false };
+  componentWillMount() {
 
+    this.props.getWords();
+  }
   render() {
     const { words } = this.props;
+  
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
@@ -67,4 +72,5 @@ const styles = StyleSheet.create({
     padding: 10
   }
 });
+
 export default Words;

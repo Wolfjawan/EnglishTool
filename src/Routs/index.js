@@ -15,6 +15,8 @@ import {
   Lightbox
 } from "react-native-router-flux";
 //documentations https://github.com/aksonov/react-native-router-flux/blob/master/docs/API.md#tabs-tabs-or-scene-tabs
+import { getWords, getSentences, addWord } from "../action";
+import { connect } from "react-redux";
 
 import DrawerContent from "../components/drawer/DrawerContent";
 import TabIcon from "../components/TabIcon";
@@ -22,7 +24,7 @@ import MenuIcon from "../images/menu_burger.png";
 import HomeIcon from "../images/icon-home.png";
 import HomeScreen from "../screens/home";
 import Words from "../screens/Words";
-import AddNewWordOrSentences from "../screens/AddNewWordOrSentences";
+import Forms from "../screens/Forms";
 import AddNewWord from "../components/Forms/AddNewWord";
 import AddNewSentence from "../components/Forms/AddNewSentence";
 import Sentences from "../screens/Sentences";
@@ -44,16 +46,16 @@ const getSceneStyle = () => ({
 
 const prefix = Platform.OS === "android" ? "mychat://mychat/" : "mychat://";
 
-const Routs = ({ db, words, sentences, getData, saveWordInState }) => (
+const Routs = ({ getWords, getSentences, words, sentences, addWord }) => (
   <Router
     onStateChange={stateHandler}
     getSceneStyle={getSceneStyle}
     uriPrefix={prefix}
-    db={db}
+    getSentences={getSentences}
+    getWords={getWords}
     words={words}
     sentences={sentences}
-    getData={getData}
-    saveWordInState={saveWordInState}
+    addWord={addWord}
   >
     <Overlay key="overlay">
       <Stack key="root" titleStyle={{ alignSelf: "center" }}>
@@ -87,12 +89,7 @@ const Routs = ({ db, words, sentences, getData, saveWordInState }) => (
               title="Sentences"
               component={Sentences}
             />
-            <Stack
-              key="AddNewWordOrSentences"
-              title="Forms"
-              icon={TabIcon}
-              component={AddNewWordOrSentences}
-            />
+            <Stack key="Forms" title="Forms" icon={TabIcon} component={Forms} />
             <Stack
               key="Archive"
               icon={TabIcon}
@@ -122,4 +119,16 @@ const styles = StyleSheet.create({
     bottom: 0
   }
 });
-export default Routs;
+
+export function mapStateToProps(store) {
+  const { words, sentences } = store.Database;
+  return {
+    words,
+    sentences
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { getWords, getSentences, addWord }
+)(Routs);

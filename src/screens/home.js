@@ -16,7 +16,10 @@ const defaultProps = {
 };
 
 class NomeScreen extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false };
+  constructor(props) {
+    super(props);
+    this.state = { hideNavBar: false, hideTabBar: false };
+  }
 
   render() {
     return (
@@ -64,7 +67,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    color: "white",
+    color: "white"
   }
 });
+
 export default NomeScreen;

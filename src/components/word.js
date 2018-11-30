@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Button from "./Elements/Button";
 import { Actions } from "react-native-router-flux";
-
+import { deleteWord } from "../action";
 const propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.string,
@@ -57,20 +57,7 @@ class Word extends React.Component {
   };
   delete = () => {
     const { id } = this.props.word;
-    const { db } = this.props;
-    db.transaction(tx => {
-      tx.executeSql(`delete from words WHERE id=?`, [id], (tx, results) => {
-        if (results.rowsAffected === 1) {
-          alert("The word has been deleted.");
-          this.props.getData();
-          setTimeout(() => {
-            Actions.Words();
-          }, 1000);
-        } else {
-          alert("Somethings went wrong.");
-        }
-      });
-    });
+    deleteWord(id);
   };
   render() {
     const { name, meaning, translation, examples } = this.props.word;
