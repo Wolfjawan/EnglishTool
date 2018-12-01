@@ -1,56 +1,82 @@
 import { Actions } from "react-native-router-flux";
-import { GET_WORDS, GET_SENTENCES, ADD_WORD, DELETE_WORD } from "./types";
+import {
+  GET_WORDS,
+  GET_SENTENCES,
+  ADD_WORD,
+  DELETE_WORD,
+  ARCHIVE_WORD
+} from "./types";
 
 import { openDatabase } from "react-native-sqlite-storage";
 var db = openDatabase({ name: "Database.db" });
-var words = [];
-var sentences = [];
 
 export const getData = () => {
-  db.transaction(tx => {
-    tx.executeSql("SELECT * FROM words", [], (tx, results) => {
-      var len = results.rows.length;
-      for (let i = 0; i < len; i++) {
-        let row = results.rows.item(i);
-        word = {
-          id: row.id,
-          name: row.name,
-          meaning: row.meaning,
-          translation: row.translation,
-          archive: row.archive,
-          examples: row.examples,
-          level: row.level
-        };
-        words.push(word);
-      }
-    });
-    tx.executeSql("SELECT * FROM sentences", [], (tx, results) => {
-      var len = results.rows.length;
-      for (let i = 0; i < len; i++) {
-        let row = results.rows.item(i);
-        sentence = {
-          id: row.id,
-          name: row.name,
-          meaning: row.meaning,
-          translation: row.translation,
-          archive: row.archive,
-          level: row.level
-        };
-        sentences.push(sentence);
-      }
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      resolve(
+        Promise.all([
+          new Promise(resolve => {
+            tx.executeSql("select * from words", [], (tx, results) => {
+              var words = [];
+              var len = results.rows.length;
+              for (let i = 0; i < len; i++) {
+                let row = results.rows.item(i);
+                word = {
+                  id: row.id,
+                  name: row.name,
+                  meaning: row.meaning,
+                  translation: row.translation,
+                  archive: row.archive,
+                  examples: row.examples,
+                  level: row.level
+                };
+                words.push(word);
+              }
+              resolve(words);
+            });
+          }),
+          new Promise(resolve => {
+            tx.executeSql("SELECT * FROM sentences", [], (tx, results) => {
+              var sentences = [];
+              var len = results.rows.length;
+              for (let i = 0; i < len; i++) {
+                let row = results.rows.item(i);
+                sentence = {
+                  id: row.id,
+                  name: row.name,
+                  meaning: row.meaning,
+                  translation: row.translation,
+                  archive: row.archive,
+                  level: row.level
+                };
+                sentences.push(sentence);
+              }
+              resolve(sentences);
+            });
+          })
+        ])
+      );
     });
   });
 };
 
-export const getWords = () => {
-  // console.log(words);
+export const loadData = () => {
+  return dispatch => {
+    getData().then(([words, sentences]) => {
+      dispatch(getWords(words));
+      dispatch(getSentences(sentences));
+    });
+  };
+};
+
+export const getWords = words => {
   return {
     type: GET_WORDS,
     words
   };
 };
 
-export const getSentences = () => {
+export const getSentences = sentences => {
   return {
     type: GET_SENTENCES,
     sentences
@@ -66,7 +92,6 @@ export const addWord = word => {
         [name, meaning, translation, examples, id],
         (tx, results) => {
           if (results) {
-            alert("Word has been updated");
             Actions.wordId({ word });
           }
         }
@@ -79,29 +104,15 @@ export const addWord = word => {
         [name, meaning, translation, examples],
         (tx, results) => {
           if (results) {
-            const wordsLength = words.length - 1;
-            const newId = words[wordsLength].id + 1;
-            newWord = {
-              id: newId,
-              name,
-              meaning,
-              translation,
-              archive: null,
-              examples,
-              level: null
-            };
-            words.push(newWord);
-            // console.log(newWord)
             alert("Word has been saved");
           }
         }
       );
     });
   }
-
   return {
     type: ADD_WORD,
-    words
+    word
   };
 };
 
@@ -119,6 +130,37 @@ export const deleteWord = id => {
     });
   });
   return {
-    type: DELETE_WORD
+    type: DELETE_WORD,
+    id
+  };
+};
+
+export const archiveWord = word => {
+  const { id, archive } = word;
+  db.transaction(tx => {
+    tx.executeSql(
+      `UPDATE words SET archive=? WHERE id=?`,
+      [archive ? false : true, id],
+      (tx, results) => {
+        if (results.rowsAffected === 1) {
+          loadData();
+          archive
+            ? (alert("The word removed from Archives."),
+              setTimeout(() => {
+                Actions.Archive();
+              }, 1000))
+            : (alert("The word stored in Archives."),
+              setTimeout(() => {
+                Actions.Words();
+              }, 1000));
+        } else {
+          alert("Something went wrong.");
+        }
+      }
+    );
+  });
+  return {
+    type: ARCHIVE_WORD,
+    word
   };
 };

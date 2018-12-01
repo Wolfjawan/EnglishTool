@@ -23,9 +23,7 @@ const defaultProps = {
 
 class Sentences extends React.Component {
   state = { hideNavBar: false, hideTabBar: false };
-  componentWillMount(){
-    this.props.getSentences()
-  }
+
   render() {
     const { sentences } = this.props;
     return (

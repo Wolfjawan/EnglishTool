@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Button from "./Elements/Button";
 import { Actions } from "react-native-router-flux";
-import { deleteWord } from "../action";
 const propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.string,
@@ -28,39 +27,13 @@ class Word extends React.Component {
     ShowTranslation: false,
     isDelete: false
   };
-  Archive = () => {
-    const { id, archive } = this.props.word;
-    const { db } = this.props;
-    db.transaction(tx => {
-      tx.executeSql(
-        `UPDATE words SET archive=? WHERE id=?`,
-        [archive ? false : true, id],
-        (tx, results) => {
-          if (results.rowsAffected === 1) {
-            archive
-              ? (alert("The word removed from Archives."),
-                this.props.getData(),
-                setTimeout(() => {
-                  Actions.Words();
-                }, 1000))
-              : (alert("The word stored in Archives."),
-                this.props.getData(),
-                setTimeout(() => {
-                  Actions.Words();
-                }, 1000));
-          } else {
-            alert("Somethings went wrong.");
-          }
-        }
-      );
-    });
-  };
+
   delete = () => {
     const { id } = this.props.word;
-    deleteWord(id);
+    this.props.deleteWord(id);
   };
   render() {
-    const { name, meaning, translation, examples } = this.props.word;
+    const { name, meaning, translation, examples, archive } = this.props.word;
     const { ShowTranslation, isDelete } = this.state;
     const { word } = this.props;
     return (
@@ -143,8 +116,8 @@ class Word extends React.Component {
             buttonStyle={styles.Edit}
           />
           <Button
-            text="Archive"
-            onPress={this.Archive}
+            text={archive ? "Unarchive" : "Archive"}
+            onPress={() => this.props.archiveWord(word)}
             textStyle={{ fontSize: 18 }}
             buttonStyle={styles.Archive}
           />

@@ -55,7 +55,12 @@ class AddNewSentence extends React.Component {
       );
     });
   };
-
+  // componentDidMount() {
+  //   if (this.props.se) {
+  //     const { id, name, meaning, translation, examples } = this.props.word;
+  //     this.setState({ id, name, meaning, translation, examples });
+  //   }
+  // }
   render() {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>

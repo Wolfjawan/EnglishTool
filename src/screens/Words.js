@@ -24,26 +24,24 @@ const defaultProps = {
 
 class Words extends React.Component {
   state = { hideNavBar: false, hideTabBar: false };
-  componentWillMount() {
 
-    this.props.getWords();
-  }
   render() {
     const { words } = this.props;
-  
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
           {words.map((word, i) => {
-            return (
-              <Button
-                key={i}
-                text={word.name}
-                buttonStyle={styles.button}
-                textStyle={styles.text}
-                onPress={() => Actions.wordId({ word })}
-              />
-            );
+            if (!word.archive) {
+              return (
+                <Button
+                  key={i}
+                  text={word.name}
+                  buttonStyle={styles.button}
+                  textStyle={styles.text}
+                  onPress={() => Actions.wordId({ word })}
+                />
+              );
+            }
           })}
         </ScrollView>
       </View>
