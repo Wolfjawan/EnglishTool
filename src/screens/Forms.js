@@ -7,7 +7,7 @@ import {
   ViewPropTypes,
   ScrollView
 } from "react-native";
-import Button from "react-native-button";
+import Button from "../components/Elements/Button";
 import { Actions } from "react-native-router-flux";
 
 const propTypes = {
@@ -27,21 +27,25 @@ class AddNewWordOrSentences extends React.Component {
   render() {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
-        <Text>Add New Word Or Sentences here</Text>
+        <Text style={{ padding: 20, fontSize: 24, color:"#384E77" }}>
+          Use the buttons below to add new word or new sentences.
+        </Text>
         <Button
+          buttonStyle={styles.button}
+          textStyle={styles.text}
+          text="New word"
           onPress={() => {
             Actions.add_new_word();
           }}
-        >
-          Add new word
-        </Button>
+        />
         <Button
+          buttonStyle={styles.button}
+          textStyle={styles.text}
+          text="New Sentences"
           onPress={() => {
             Actions.add_new_sentence();
           }}
-        >
-          Add new Sentences
-        </Button>
+        />
       </View>
     );
   }
@@ -52,9 +56,19 @@ AddNewWordOrSentences.defaultProps = defaultProps;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    backgroundColor:'#CAD8DE'
+  },
+  button: {
+    backgroundColor: "#384E77",
+    borderRadius: 15,
+    margin: 50,
+    maxHeight: 100,
     alignItems: "center",
-    backgroundColor: "transparent"
+    padding: 10
+  },
+  text: {
+    fontSize: 30,
+    color: "white",
   }
 });
 export default AddNewWordOrSentences;

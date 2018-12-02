@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "688958015400",
+    "firebase_url": "https://english-tool-94e6a.firebaseio.com",
+    "project_id": "english-tool-94e6a",
+    "storage_bucket": "english-tool-94e6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688958015400:android:039821848baad8de",
+        "android_client_info": {
+          "package_name": "com.englishtool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688958015400-ilebs3oii0rr447a357ct55rchctkgsh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9Lk-KD7PmgLHJNh5HEeHeZrFiLWDcA7M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

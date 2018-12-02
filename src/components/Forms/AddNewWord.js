@@ -5,23 +5,11 @@ import {
   Text,
   View,
   ViewPropTypes,
-  TouchableHighlight,
   ScrollView
 } from "react-native";
-import Button from "react-native-button";
+import Input from "../Elements/Input";
+import Button from "../Elements/Button";
 import { Actions } from "react-native-router-flux";
-
-import t from "tcomb-form-native";
-var Form = t.form.Form;
-
-var Word = t.struct({
-  name: t.String,
-  meaning: t.String,
-  translation: t.String
-  // rememberMe: t.Boolean // a boolean
-});
-
-var options = {};
 
 const propTypes = {
   name: PropTypes.string.isRequired,
@@ -35,27 +23,83 @@ const defaultProps = {
 };
 
 class AddNewWord extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hideNavBar: false,
+      hideTabBar: false,
+      name: "",
+      meaning: "",
+      translation: "",
+      examples: "",
+      id: null
+    };
+  }
+  componentDidMount() {
+    if (this.props.word) {
+      const { id, name, meaning, translation, examples } = this.props.word;
+      this.setState({ id, name, meaning, translation, examples });
+    }
+  }
+  onChangeText = e => {
+    this.setState({
+      [e.name]: e.text
+    });
+  };
 
   onPress = () => {
-    var value = this.refs.form.getValue();
-    if (value) {
-      console.log(value)
-    }
+    const { id, name, meaning, translation, examples } = this.state;
+    const word = {
+      id,
+      name,
+      meaning,
+      translation,
+      examples
+    };
+    this.props.addWord(word);
+    this.setState({
+      name: "",
+      meaning: "",
+      translation: "",
+      examples: "",
+      id: null
+    });
   };
-  
+
   render() {
+    const { id, name, meaning, translation, examples } = this.state;
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
-          <Form ref="form" type={Word} options={options} />
-          <TouchableHighlight
-            style={styles.button}
+          <Input
+            header="Word"
+            value={name}
+            name="name"
+            onChangeText={this.onChangeText}
+          />
+          <Input
+            header="Translation"
+            value={translation}
+            name="translation"
+            onChangeText={this.onChangeText}
+          />
+          <Input
+            header="Meaning"
+            value={meaning}
+            name="meaning"
+            onChangeText={this.onChangeText}
+          />
+          <Input
+            header="Examples"
+            value={examples}
+            name="examples"
+            onChangeText={this.onChangeText}
+          />
+          <Button
+            buttonStyle={styles.button}
+            text="Save"
             onPress={this.onPress}
-            underlayColor="#99d9f4"
-          >
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableHighlight>
+          />
         </ScrollView>
       </View>
     );
@@ -77,14 +121,15 @@ var styles = StyleSheet.create({
     alignSelf: "center"
   },
   button: {
-    height: 36,
     backgroundColor: "#48BBEC",
     borderColor: "#48BBEC",
     borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: "stretch",
-    justifyContent: "center"
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: "center",
+    padding: 10
   }
 });
-export default AddNewWord;
+
+
+export default AddNewWord
