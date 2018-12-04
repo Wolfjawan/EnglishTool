@@ -23,14 +23,21 @@ const defaultProps = {
 };
 
 class Archives extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false };
+  state = { hideNavBar: false, hideTabBar: false, showWords: false, showSentences: false };
 
   render() {
-    const { words } = this.props;
+    const { words, sentences } = this.props;
+    const { showWords, showSentences } = this.state
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
-          {words.map((word, i) => {
+          <Button
+            text='Words'
+            buttonStyle={styles.button}
+            textStyle={styles.text}
+            onPress={() => this.setState({ showWords: showWords ? false : true })}
+          />
+          {showWords && words.map((word, i) => {
             if (word.archive) {
               return (
                 <Button
@@ -39,6 +46,25 @@ class Archives extends React.Component {
                   buttonStyle={styles.button}
                   textStyle={styles.text}
                   onPress={() => Actions.wordId({ word })}
+                />
+              );
+            }
+          })}
+          <Button
+            text='Sentences'
+            buttonStyle={styles.button}
+            textStyle={styles.text}
+            onPress={() => this.setState({ showSentences: showSentences ? false : true })}
+          />
+          {showSentences && sentences.map((sentence, i) => {
+            if (sentence.archive) {
+              return (
+                <Button
+                  key={i}
+                  text={sentence.name}
+                  buttonStyle={styles.button}
+                  textStyle={styles.text}
+                  onPress={() => Actions.sentenceId({ sentence })}
                 />
               );
             }

@@ -4,12 +4,41 @@ import {
   GET_SENTENCES,
   ADD_WORD,
   DELETE_WORD,
-  ARCHIVE_WORD
+  ARCHIVE_WORD,
+  ADD_SENTENCES,
+  DELETE_SENTENCES,
+  ARCHIVE_SENTENCES
 } from "./types";
 
 import { openDatabase } from "react-native-sqlite-storage";
 var db = openDatabase({ name: "Database.db" });
-
+export const createTables = () => {
+  db.transaction(tx => {
+    tx.executeSql(
+      `CREATE TABLE IF NOT EXISTS words
+      (
+          id INTEGER primary key,
+          name text ,
+          meaning text,
+          translation text,
+          archive INTEGER,
+          examples text,
+          level INTEGER
+      )`
+    );
+    tx.executeSql(
+      `CREATE TABLE IF NOT EXISTS sentences
+      (
+          id INTEGER primary key,
+          name text ,
+          meaning text,
+          translation text,
+          archive INTEGER,
+          level INTEGER
+      )`
+    );
+  });
+}
 export const getData = () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
@@ -162,5 +191,85 @@ export const archiveWord = word => {
   return {
     type: ARCHIVE_WORD,
     word
+  };
+};
+
+export const addSentence = sentence => {
+  const { id, name, meaning, translation } = sentence
+  if (id) {
+    db.transaction(tx => {
+      tx.executeSql(
+        "update sentences set name=?, meaning=?, translation=? where id=?",
+        [name, meaning, translation, id],
+        (tx, results) => {
+          if (results) {
+            Actions.sentenceId({ sentence });
+          }
+        }
+      );
+    });
+  } else {
+    db.transaction(tx => {
+      tx.executeSql(
+        "insert into sentences ( name, meaning, translation ) values ( ?, ?, ? )",
+        [name, meaning, translation],
+        (tx, results) => {
+          alert("Sentence has been saved");
+        }
+      );
+    });
+  }
+  return {
+    type: ADD_SENTENCES,
+    sentence
+  };
+}
+
+export const deleteSentence = id => {
+  db.transaction(tx => {
+    tx.executeSql(`delete from sentences WHERE id=?`, [id], (tx, results) => {
+      if (results.rowsAffected === 1) {
+        alert("The sentence has been deleted.");
+        setTimeout(() => {
+          Actions.Sentences();
+        }, 1000);
+      } else {
+        alert("Somethings went wrong.");
+      }
+    });
+  });
+  return {
+    type: DELETE_SENTENCES,
+    id
+  };
+};
+
+export const archiveSentence = sentence => {
+  const { id, archive } = sentence;
+  db.transaction(tx => {
+    tx.executeSql(
+      `UPDATE sentences SET archive=? WHERE id=?`,
+      [archive ? false : true, id],
+      (tx, results) => {
+        if (results.rowsAffected === 1) {
+          loadData();
+          archive
+            ? (alert("The sentence removed from Archives."),
+              setTimeout(() => {
+                Actions.Archive();
+              }, 1000))
+            : (alert("The sentence stored in Archives."),
+              setTimeout(() => {
+                Actions.Sentences();
+              }, 1000));
+        } else {
+          alert("Something went wrong.");
+        }
+      }
+    );
+  });
+  return {
+    type: ARCHIVE_SENTENCES,
+    sentence
   };
 };

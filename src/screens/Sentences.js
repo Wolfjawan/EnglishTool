@@ -30,15 +30,17 @@ class Sentences extends React.Component {
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
           {sentences.map((sentence, i) => {
-            return (
-              <Button
-                key={i}
-                text={sentence.name}
-                buttonStyle={styles.button}
-                textStyle={styles.text}
-                onPress={() => Actions.sentenceId({ sentence })}
-              />
-            );
+            if (!sentence.archive) {
+              return (
+                <Button
+                  key={i}
+                  text={sentence.name}
+                  buttonStyle={styles.button}
+                  textStyle={styles.text}
+                  onPress={() => Actions.sentenceId({ sentence })}
+                />
+              );
+            }
           })}
         </ScrollView>
       </View>

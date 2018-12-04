@@ -28,39 +28,37 @@ class AddNewSentence extends React.Component {
     hideTabBar: false,
     name: "",
     meaning: "",
-    translation: ""
+    translation: "",
+    id:null
   };
   onChangeText = e => {
     this.setState({
       [e.name]: e.text
     });
   };
+    componentDidMount() {
+    if (this.props.sentence) {
+      const { id, name, meaning, translation } = this.props.sentence;
+      this.setState({ id, name, meaning, translation});
+    }
+  }
   onPress = () => {
-    var { db } = this.props
-    const { name, meaning, translation } = this.state;
-    db.transaction(tx => {
-      tx.executeSql(
-        "insert into sentences ( name, meaning, translation ) values ( ?, ?, ? )",
-        [name, meaning, translation],
-        (tx, results) => {
-          if (results) {
-            this.setState({
-              name: "",
-              meaning: "",
-              translation: ""
-            });
-            this.props.getData()
-          }
-        }
-      );
+    const {id, name, meaning, translation } = this.state;
+    const sentence = {
+      id,
+      name,
+      meaning,
+      translation
+    };
+    this.props.addSentence(sentence);
+    this.setState({
+      name: "",
+      meaning: "",
+      translation: "",
+      id: null
     });
   };
-  // componentDidMount() {
-  //   if (this.props.se) {
-  //     const { id, name, meaning, translation, examples } = this.props.word;
-  //     this.setState({ id, name, meaning, translation, examples });
-  //   }
-  // }
+
   render() {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>

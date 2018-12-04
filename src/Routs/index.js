@@ -4,7 +4,10 @@ import {
   getSentences,
   addWord,
   deleteWord,
-  archiveWord
+  archiveWord,
+  addSentence,
+  deleteSentence,
+  archiveSentence
 } from "../action";
 import { connect } from "react-redux";
 import Routs from "./Routs";
@@ -16,18 +19,24 @@ const Routers = ({
   sentences,
   addWord,
   deleteWord,
-  archiveWord
+  archiveWord,
+  addSentence,
+  deleteSentence,
+  archiveSentence
 }) => (
-  <Routs
-    getSentences={getSentences}
-    getWords={getWords}
-    words={words}
-    sentences={sentences}
-    addWord={addWord}
-    deleteWord={deleteWord}
-    archiveWord={archiveWord}
-  />
-);
+    <Routs
+      getSentences={getSentences}
+      getWords={getWords}
+      words={words}
+      sentences={sentences}
+      addWord={addWord}
+      deleteWord={deleteWord}
+      archiveWord={archiveWord}
+      addSentence={addSentence}
+      deleteSentence={deleteSentence}
+      archiveSentence={archiveSentence}
+    />
+  );
 
 export function mapStateToProps(store) {
   const { words, sentences } = store.Database;
@@ -39,5 +48,5 @@ export function mapStateToProps(store) {
 
 export default connect(
   mapStateToProps,
-  { getWords, getSentences, addWord, deleteWord, archiveWord }
+  { getWords, getSentences, addWord, deleteWord, archiveWord, addSentence, deleteSentence, archiveSentence }
 )(Routers);

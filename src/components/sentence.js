@@ -22,14 +22,56 @@ const defaultProps = {
 };
 
 class Sentence extends React.Component {
-  state = { hideNavBar: false, hideTabBar: false, ShowTranslation: false };
-
+  state = { hideNavBar: false, hideTabBar: false, ShowTranslation: false, isDelete:false };
+  delete = () => {
+    const { id } = this.props.sentence;
+    this.props.deleteSentence(id);
+  };
   render() {
     const { sentence } = this.props;
     const { name, meaning, translation, archive } = sentence;
-    const { ShowTranslation } = this.state;
+    const { ShowTranslation, isDelete } = this.state;
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
+        {isDelete && (
+          <View
+            style={{
+              borderWidth: 1,
+              paddingTop: 10,
+              margin: 10,
+              borderRadius: 5,
+              minHeight: 120,
+              alignItems: "center"
+            }}
+          >
+            <Text style={{ fontSize: 20 }}>
+              Are you sure you want to delete?
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                marginTop: 40,
+                maxHeight: 40
+              }}
+            >
+              <Button
+                text="Cancel"
+                onPress={() => {
+                  this.setState({ isDelete: false });
+                }}
+                textStyle={{ fontSize: 18 }}
+                buttonStyle={styles.Edit}
+              />
+              <Button
+                text="Delete"
+                onPress={this.delete}
+                textStyle={{ fontSize: 18 }}
+                buttonStyle={styles.Delete}
+              />
+            </View>
+          </View>
+        )}
         <ScrollView>
           <View style={styles.Sentence}>
             {ShowTranslation ? (
@@ -41,14 +83,14 @@ class Sentence extends React.Component {
                 textStyle={styles.name}
               />
             ) : (
-              <Button
-                text={name}
-                onPress={() => {
-                  this.setState({ ShowTranslation: true });
-                }}
-                textStyle={styles.name}
-              />
-            )}
+                <Button
+                  text={name}
+                  onPress={() => {
+                    this.setState({ ShowTranslation: true });
+                  }}
+                  textStyle={styles.name}
+                />
+              )}
             <View style={{ marginBottom: 10, padding: 4 }}>
               <Text>Meaning: </Text>
               <Text style={styles.meaning}>{meaning}</Text>

@@ -108,6 +108,12 @@ class Word extends React.Component {
             </View>
           </View>
         </ScrollView>
+        <Button
+            text="Practice"
+            onPress={() => Actions.painting({ word })}
+            textStyle={{ fontSize: 18 }}
+            buttonStyle={styles.painting}
+          />
         <View style={{ flex: 1, flexDirection: "row", maxHeight: 40 }}>
           <Button
             text="Edit"
@@ -205,6 +211,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#503204",
     padding: 4
+  },
+  painting:{
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#FFBA49",
+    borderRadius: 5,
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 10,
+    maxHeight:40
   }
 });
 export default Word;

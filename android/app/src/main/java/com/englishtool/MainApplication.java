@@ -3,6 +3,7 @@ package com.englishtool;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new SQLitePluginPackage(),
           new MainReactPackage(),
+            new SketchCanvasPackage(),
           new RNGoogleSigninPackage()
       );
     }

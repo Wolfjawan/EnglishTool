@@ -3,7 +3,10 @@ import {
   GET_SENTENCES,
   ADD_WORD,
   DELETE_WORD,
-  ARCHIVE_WORD
+  ARCHIVE_WORD,
+  ADD_SENTENCES,
+  DELETE_SENTENCES,
+  ARCHIVE_SENTENCES
 } from "../action/types";
 
 const INITIAL_STATE = {
@@ -34,7 +37,7 @@ export default (state = INITIAL_STATE, action) => {
       } else {
         const { name, meaning, translation, examples } = action.word;
         const wordsLength = state.words.length - 1;
-        const newId = state.words[wordsLength].id + 1;
+        const newId = state.words.length > 0 ? state.words[wordsLength].id + 1 : 1
         newWord = {
           id: newId,
           name,
@@ -70,6 +73,56 @@ export default (state = INITIAL_STATE, action) => {
           level: null
         };
         return { ...state, words: [...words, archivedWord] };
+      }
+    case ADD_SENTENCES:
+      if (action.sentence.id) {
+        const { id, name, meaning, translation } = action.sentence;
+        const newSentences = state.sentences.filter(sentence => sentence.id !== id);
+        newSentence = {
+          id,
+          name,
+          meaning,
+          translation,
+          archive: null,
+          level: null
+        };
+        return { ...state, sentences: [...newSentences, newSentence] };
+      } else {
+        const { name, meaning, translation } = action.sentence;
+        const sentencesLength = state.sentences.length - 1;
+        const sentenceId = state.sentences.length > 0 ? state.sentences[sentencesLength].id + 1 : 1
+        newSentence = {
+          id: sentenceId,
+          name,
+          meaning,
+          translation,
+          archive: null,
+          level: null
+        };
+        return { ...state, sentences: [...state.sentences, newSentence] };
+      }
+    case DELETE_SENTENCES:
+      const newSentence = state.sentences.filter(sentence => sentence.id !== action.id);
+      return { ...state, sentences: newSentence };
+      case ARCHIVE_SENTENCES:
+      if (action.sentence.id) {
+        const {
+          id,
+          name,
+          meaning,
+          translation,
+          archive
+        } = action.sentence;
+        const sentences = state.sentences.filter(sentence => sentence.id !== id);
+        archivedSentence = {
+          id,
+          name,
+          meaning,
+          translation,
+          archive: archive ? false : true,
+          level: null
+        };
+        return { ...state, sentences: [...sentences, archivedSentence] };
       }
     default:
       return state;

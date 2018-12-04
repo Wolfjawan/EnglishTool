@@ -31,7 +31,7 @@ import Settings from "../screens/Settings";
 import Word from "../components/word";
 import Sentence from "../components/sentence";
 import DrawerIcon from "../components/drawer/drawerIcon";
-
+import Painting from "../screens/Painting";
 const stateHandler = (prevState, newState, action) => {
   // console.log("onStateChange: ACTION:",newState);
 };
@@ -51,7 +51,10 @@ const Routs = ({
   sentences,
   addWord,
   deleteWord,
-  archiveWord
+  archiveWord,
+  addSentence,
+  deleteSentence,
+  archiveSentence
 }) => (
   <Router
     onStateChange={stateHandler}
@@ -64,6 +67,9 @@ const Routs = ({
     addWord={addWord}
     deleteWord={deleteWord}
     archiveWord={archiveWord}
+    addSentence={addSentence}
+    deleteSentence={deleteSentence}
+    archiveSentence={archiveSentence}
   >
     <Overlay key="overlay">
       <Stack key="root" titleStyle={{ alignSelf: "center" }}>
@@ -115,6 +121,7 @@ const Routs = ({
         <Scene key="wordId" component={Word} title="Word" />
         <Scene key="sentenceId" component={Sentence} title="Sentence" />
         <Scene key="settings" component={Settings} title="Settings" />
+        <Scene key="painting" component={Painting} title="Paint bord" />
       </Stack>
     </Overlay>
   </Router>
