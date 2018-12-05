@@ -121,6 +121,7 @@ export const addWord = word => {
         [name, meaning, translation, examples, id],
         (tx, results) => {
           if (results) {
+            alert("Word has been updated");
             Actions.wordId({ word });
           }
         }
@@ -134,6 +135,7 @@ export const addWord = word => {
         (tx, results) => {
           if (results) {
             alert("Word has been saved");
+            Actions.add_new_word()
           }
         }
       );
@@ -203,6 +205,7 @@ export const addSentence = sentence => {
         [name, meaning, translation, id],
         (tx, results) => {
           if (results) {
+            alert("Sentence has been updated");
             Actions.sentenceId({ sentence });
           }
         }
@@ -215,6 +218,7 @@ export const addSentence = sentence => {
         [name, meaning, translation],
         (tx, results) => {
           alert("Sentence has been saved");
+          Actions.add_new_sentence();
         }
       );
     });

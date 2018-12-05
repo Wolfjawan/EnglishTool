@@ -30,6 +30,14 @@ class Words extends React.Component {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
+        <Button
+          buttonStyle={styles.button}
+          textStyle={{fontSize:50,color: "white", textAlign:'center'}}
+          text="+"
+          onPress={() => {
+            Actions.add_new_word();
+          }}
+        />
           {words.map((word, i) => {
             if (!word.archive) {
               return (
@@ -55,7 +63,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    marginTop: 20,
     backgroundColor: "#CAD8DE"
   },
   text: {
@@ -67,7 +74,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 10,
     marginBottom: 0,
-    padding: 10
+    padding: 10,
+    maxHeight:50
   }
 });
 

@@ -29,6 +29,14 @@ class Sentences extends React.Component {
     return (
       <View style={[styles.container, this.props.sceneStyle]}>
         <ScrollView>
+          <Button
+            buttonStyle={styles.button}
+            textStyle={{ fontSize: 50, color: "white", textAlign: 'center' }}
+            text="+"
+            onPress={() => {
+              Actions.add_new_sentence();
+            }}
+          />
           {sentences.map((sentence, i) => {
             if (!sentence.archive) {
               return (
@@ -54,7 +62,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    marginTop: 20,
     backgroundColor: "#CAD8DE"
   },
   text: {
@@ -69,7 +76,8 @@ const styles = StyleSheet.create({
     margin: 10,
     marginBottom: 0,
     alignItems: "center",
-    padding: 10
+    padding: 10,
+    maxHeight: 50
   }
 });
 

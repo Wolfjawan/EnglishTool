@@ -78,7 +78,7 @@ export default (state = INITIAL_STATE, action) => {
       if (action.sentence.id) {
         const { id, name, meaning, translation } = action.sentence;
         const newSentences = state.sentences.filter(sentence => sentence.id !== id);
-        newSentence = {
+        newSen = {
           id,
           name,
           meaning,
@@ -86,12 +86,12 @@ export default (state = INITIAL_STATE, action) => {
           archive: null,
           level: null
         };
-        return { ...state, sentences: [...newSentences, newSentence] };
+        return { ...state, sentences: [...newSentences, newSen] };
       } else {
         const { name, meaning, translation } = action.sentence;
         const sentencesLength = state.sentences.length - 1;
         const sentenceId = state.sentences.length > 0 ? state.sentences[sentencesLength].id + 1 : 1
-        newSentence = {
+        newSent = {
           id: sentenceId,
           name,
           meaning,
@@ -99,7 +99,7 @@ export default (state = INITIAL_STATE, action) => {
           archive: null,
           level: null
         };
-        return { ...state, sentences: [...state.sentences, newSentence] };
+        return { ...state, sentences: [...state.sentences, newSent] };
       }
     case DELETE_SENTENCES:
       const newSentence = state.sentences.filter(sentence => sentence.id !== action.id);

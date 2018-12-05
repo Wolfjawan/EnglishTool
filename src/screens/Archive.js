@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    marginTop: 20,
     backgroundColor: "#CAD8DE"
   },
   text: {

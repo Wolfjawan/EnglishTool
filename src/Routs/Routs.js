@@ -22,7 +22,6 @@ import MenuIcon from "../images/menu_burger.png";
 import HomeIcon from "../images/icon-home.png";
 import HomeScreen from "../screens/home";
 import Words from "../screens/Words";
-import Forms from "../screens/Forms";
 import AddNewWord from "../components/Forms/AddNewWord";
 import AddNewSentence from "../components/Forms/AddNewSentence";
 import Sentences from "../screens/Sentences";
@@ -38,8 +37,6 @@ const stateHandler = (prevState, newState, action) => {
 
 const getSceneStyle = () => ({
   backgroundColor: "#CAD8DE",
-  shadowOpacity: 1,
-  shadowRadius: 3
 });
 
 const prefix = Platform.OS === "android" ? "mychat://mychat/" : "mychat://";
@@ -56,23 +53,22 @@ const Routs = ({
   deleteSentence,
   archiveSentence
 }) => (
-  <Router
-    onStateChange={stateHandler}
-    getSceneStyle={getSceneStyle}
-    uriPrefix={prefix}
-    getSentences={getSentences}
-    getWords={getWords}
-    words={words}
-    sentences={sentences}
-    addWord={addWord}
-    deleteWord={deleteWord}
-    archiveWord={archiveWord}
-    addSentence={addSentence}
-    deleteSentence={deleteSentence}
-    archiveSentence={archiveSentence}
-  >
-    <Overlay key="overlay">
-      <Stack key="root" titleStyle={{ alignSelf: "center" }}>
+    <Router
+      onStateChange={stateHandler}
+      getSceneStyle={getSceneStyle}
+      uriPrefix={prefix}
+      getSentences={getSentences}
+      getWords={getWords}
+      words={words}
+      sentences={sentences}
+      addWord={addWord}
+      deleteWord={deleteWord}
+      archiveWord={archiveWord}
+      addSentence={addSentence}
+      deleteSentence={deleteSentence}
+      archiveSentence={archiveSentence}
+    >
+      <Stack key="root" >
         <Drawer
           hideNavBar
           key="drawer"
@@ -103,7 +99,6 @@ const Routs = ({
               title="Sentences"
               component={Sentences}
             />
-            <Stack key="Forms" title="Forms" icon={TabIcon} component={Forms} />
             <Stack
               key="Archive"
               icon={TabIcon}
@@ -123,9 +118,8 @@ const Routs = ({
         <Scene key="settings" component={Settings} title="Settings" />
         <Scene key="painting" component={Painting} title="Paint bord" />
       </Stack>
-    </Overlay>
-  </Router>
-);
+    </Router>
+  );
 const styles = StyleSheet.create({
   container: {
     flex: 1
